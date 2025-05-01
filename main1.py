@@ -35,7 +35,7 @@ def parse_gymnasium_19(url):
             raw_name = re.sub(r"(?<=\w)([А-ЯЁ])", r" \1", director_name)
             print(f'• Руководитель: {raw_name}')
 
-        # --- Новости ---
+        # Новости
         print("\n Ссылки на новости:")
         news_links = set()
 
