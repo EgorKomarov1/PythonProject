@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import re
+import re # new comment
 
 def parse_gymnasium_19(url):
     try:
@@ -11,45 +11,44 @@ def parse_gymnasium_19(url):
         # --- Контакты ---
         print("\n Контакты:")
 
-        # Телефоны (все возможные форматы)
-        contact_section = soup.find("footer") or soup.find(class_="contacts") or soup
-        text = contact_section.get_text()
-        phone_regex = r'(?:\+7|8)[\s\-]?\(?\d{3,4}\)?[\s\-]?\d{2,3}[\s\-]?\d{2}[\s\-]?\d{2}'
-        phones = set(re.findall(phone_regex, response.text))
-        if phones:
-            print("• Телефоны:", ", ".join([re.sub(r'\D', '', p) for p in phones]))
+        # Телефон
+        phone_link = soup.find('a', class_='departments__link', href=lambda x: x and x.startswith('tel:'))
+        if phone_link:
+            phone_numbers = phone_link.get_text(strip=True)
+            print(f'• Телефон: {phone_numbers}')
 
         # Email
-        emails = set(re.findall(r'[\w\.-]+@[\w\.-]+\.\w+', response.text))
-        if emails:
-            print("• Email:", ", ".join(emails))
-
+        email = soup.find('a',href=lambda x: x and x.startswith('mailto:'))
+        if email:
+            email_ = email.get_text(strip=True)
+            print(f'• Email: {email_}')
         # Адрес
-        address_keywords = ['адрес', 'address', 'ул.', 'улица', 'Орел', 'Орёл']
-        address = None
-        for keyword in address_keywords:
-            found = soup.find(string=re.compile(keyword, re.IGNORECASE))
-            if found:
-                address = found.parent.get_text(" ", strip=True)
-                break
-        if address:
-            print("• Адрес:", address)
+        adres = soup.find('div', class_='contacts__text')
+        if adres:
+            adres_ur = adres.get_text(strip=True)
+            print(f'• Адрес: {adres_ur[27:]}')
+
+        # Руководитель
+        director_div = soup.find('div', class_='user__name')
+        if director_div:
+            director_name = director_div.get_text(strip=True)
+            raw_name = re.sub(r"(?<=\w)([А-ЯЁ])", r" \1", director_name)
+            print(f'• Руководитель: {raw_name}')
 
         # --- Новости ---
         print("\n Ссылки на новости:")
         news_links = set()
 
-        for block in soup.find_all(class_=re.compile(r'news|новости|post', re.IGNORECASE)):
+        for block in soup.find_all(class_=re.compile('news', re.IGNORECASE)):
             for a in block.find_all('a', href=True):
                 link = a['href']
                 if not link.startswith(('javascript:', '#')):
                     news_links.add(link if link.startswith('http') else f"{url.rstrip('/')}/{link.lstrip('/')}")
 
-        for a in soup.find_all('a', href=True, string=re.compile(r'новости|news|события', re.IGNORECASE)):
+        for a in soup.find_all('a', href=True, string=re.compile('news', re.IGNORECASE)):
             link = a['href']
             if not link.startswith(('javascript:', '#')):
                 news_links.add(link if link.startswith('http') else f"{url.rstrip('/')}/{link.lstrip('/')}")
-
         # Вывод
         if news_links:
             for link in news_links:
