@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-import re # new comment
+import re
 
 def parse_gymnasium_19(url):
     try:
