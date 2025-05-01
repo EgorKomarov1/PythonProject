@@ -8,7 +8,7 @@ def parse_gymnasium_19(url):
         response = requests.get(url)
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        # --- Контакты ---
+        # Контакты
         print("\n Контакты:")
 
         # Телефон
