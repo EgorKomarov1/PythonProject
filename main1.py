@@ -7,8 +7,9 @@ def parse_gymnasium_19(url):
         # Запрос к сайту
         response = requests.get(url)
         soup = BeautifulSoup(response.text, 'html.parser')
-        
-        print("\n Контакты:")
+
+        # Контакты
+        print("\n Контактные данные:")
 
         # Телефон
         phone_link = soup.find('a', class_='departments__link', href=lambda x: x and x.startswith('tel:'))
@@ -27,12 +28,35 @@ def parse_gymnasium_19(url):
             adres_ur = adres.get_text(strip=True)
             print(f'• Адрес: {adres_ur[27:]}')
 
-        # Руководитель
+        # Директор
         director_div = soup.find('div', class_='user__name')
         if director_div:
             director_name = director_div.get_text(strip=True)
             raw_name = re.sub(r"(?<=\w)([А-ЯЁ])", r" \1", director_name)
-            print(f'• Руководитель: {raw_name}')
+            print(f'\n Директор: \n• {raw_name}')
+
+        # Завучи
+        print('\n Завучи:')
+        zavuch_1 = soup.find('a', class_='menu__link',href=lambda x: x and x.startswith('/kop'))
+        zavuch_2 = soup.find('a', class_='menu__link',href=lambda x: x and x.startswith('/sta'))
+        zavuch_3 = soup.find('a', class_='menu__link',href=lambda x: x and x.startswith('/evs'))
+        zavuch_4 = soup.find('a', class_='menu__link',href=lambda x: x and x.startswith('/sem'))
+        zavuch_5 = soup.find('a', class_='menu__link',href=lambda x: x and x.startswith('/cur'))
+        if zavuch_1:
+            zavuch_11 = zavuch_1.get_text(strip=True)
+            print('•', zavuch_11)
+        if zavuch_2:
+            zavuch_22 = zavuch_2.get_text(strip=True)
+            print('•', zavuch_22)
+        if zavuch_3:
+            zavuch_33 = zavuch_3.get_text(strip=True)
+            print('•', zavuch_33)
+        if zavuch_4:
+            zavuch_44 = zavuch_4.get_text(strip=True)
+            print('•', zavuch_44)
+        if zavuch_5:
+            zavuch_55 = zavuch_5.get_text(strip=True)
+            print('•', zavuch_55)
 
         # Новости
         print("\n Ссылки на новости:")
