@@ -2,6 +2,23 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
+
+
+
+
+"""
+TODO:
+1. Добавить логирование с использованием logging (заместо Print)
+2. Разобраться что такое декоратор, try/except вынести в декоратор
+3. Выводить в консоль (с помощью print) нужно в основном только на дебаге кода 
+    изучи вопрос куда можно сохранять полученные данные (какие БД существуют, 
+    какие форматы файлов существуют для хранения данных)
+4. Нужно изучить, что такое requerments и создать его в проекте 
+5. Нужно изучить, что такое gitignore и создать его в проекте
+
+"""
+
+
 def parse_gymnasium_19(url):
     try:
         # Запрос к сайту
@@ -37,11 +54,17 @@ def parse_gymnasium_19(url):
 
         # Завучи
         print('\n Завучи:')
+
+        # TODO код повторяется, отличии минмиальны, соблюдай принцип DRY и в соответствии с этим принципом внеси изменения в код
+        # region переписать по DRY
         zavuch_1 = soup.find('a', class_='menu__link',href=lambda x: x and x.startswith('/kop'))
         zavuch_2 = soup.find('a', class_='menu__link',href=lambda x: x and x.startswith('/sta'))
         zavuch_3 = soup.find('a', class_='menu__link',href=lambda x: x and x.startswith('/evs'))
         zavuch_4 = soup.find('a', class_='menu__link',href=lambda x: x and x.startswith('/sem'))
         zavuch_5 = soup.find('a', class_='menu__link',href=lambda x: x and x.startswith('/cur'))
+
+
+
         if zavuch_1:
             zavuch_11 = zavuch_1.get_text(strip=True)
             print('•', zavuch_11)
@@ -57,6 +80,7 @@ def parse_gymnasium_19(url):
         if zavuch_5:
             zavuch_55 = zavuch_5.get_text(strip=True)
             print('•', zavuch_55)
+        # endregion
 
         # Новости
         print("\n Ссылки на новости:")
