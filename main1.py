@@ -4,7 +4,19 @@ import re
 
 # test
 
+import logging
 
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        # logging.FileHandler("app.log"),  # Запись в файл
+        logging.StreamHandler()         # Вывод в консоль
+    ]
+)
+
+log = logging.getLogger(__name__)
 
 """
 TODO:
@@ -69,6 +81,7 @@ def parse_gymnasium_19(url):
             zavuch_11 = zavuch_1.get_text(strip=True)
             print('•', zavuch_11)
         if zavuch_2:
+
             zavuch_22 = zavuch_2.get_text(strip=True)
             print('•', zavuch_22)
         if zavuch_3:
@@ -108,4 +121,7 @@ def parse_gymnasium_19(url):
 
 if __name__ == "__main__":
     url = "https://orel-gym19.obr57.ru/"
-    parse_gymnasium_19(url)
+    # parse_gymnasium_19(url)
+    log.info('qwe')
+    print('qwe')
+    log.error('qwe')
