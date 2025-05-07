@@ -87,6 +87,7 @@ def parse_gymnasium_19(url):
     except Exception as e:
         print(f"Ошибка: {e}")
 
+
 if __name__ == "__main__":
-    url = "https://orel-gym19.obr57.ru/"
-    parse_gymnasium_19(url)
+    website_url = "https://orel-gym19.obr57.ru/"
+    parse_gymnasium_19(website_url)
