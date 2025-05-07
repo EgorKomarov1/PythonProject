@@ -2,10 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-# test
-
-
-
 """
 TODO:
 1. Добавить логирование с использованием logging (заместо Print)
@@ -57,7 +53,7 @@ def parse_gymnasium_19(url):
 
         # TODO код повторяется, отличии минмиальны, соблюдай принцип DRY и в соответствии с этим принципом внеси изменения в код
         # region переписать по DRY
-        zavuchs = soup.find_all('a', class_='menu__link',href=lambda x: x and any(x.startswith(p) for p in ('/kop', '/evs', '/cur', '/sem', '/sta')))
+        zavuchs = soup.find_all('a', class_='menu__link', href=lambda x: x and any(x.startswith(p) for p in ('/kop', '/evs', '/cur', '/sem', '/sta')))
         if zavuchs:
             for a in zavuchs:
                 print(f'• {a.get_text(strip=True)}')
