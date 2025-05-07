@@ -35,7 +35,7 @@ def parse_gymnasium_19(url):
             print(f'• Телефон: {phone_numbers}')
 
         # Email
-        email = soup.find('a',href=lambda x: x and x.startswith('mailto:'))
+        email = soup.find('a', href=lambda x: x and x.startswith('mailto:'))
         if email:
             email_ = email.get_text(strip=True)
             print(f'• Email: {email_}')
@@ -56,7 +56,7 @@ def parse_gymnasium_19(url):
         print('\n Завучи:')
 
         # TODO код повторяется, отличии минмиальны, соблюдай принцип DRY и в соответствии с этим принципом внеси изменения в код
-        # region переписать по DRY ИСПРАВЛЕНО
+        # region переписать по DRY
         zavuchs = soup.find_all('a', class_='menu__link',href=lambda x: x and any(x.startswith(p) for p in ('/kop', '/evs', '/cur', '/sem', '/sta')))
         if zavuchs:
             for a in zavuchs:
