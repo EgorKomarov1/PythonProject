@@ -13,7 +13,7 @@ TODO:
 5. Нужно изучить, что такое gitignore и создать его в проекте
 
 """
-
+#
 
 def parse_gymnasium_19(url):
     try:
