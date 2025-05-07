@@ -57,29 +57,10 @@ def parse_gymnasium_19(url):
 
         # TODO код повторяется, отличии минмиальны, соблюдай принцип DRY и в соответствии с этим принципом внеси изменения в код
         # region переписать по DRY
-        zavuch_1 = soup.find('a', class_='menu__link',href=lambda x: x and x.startswith('/kop'))
-        zavuch_2 = soup.find('a', class_='menu__link',href=lambda x: x and x.startswith('/sta'))
-        zavuch_3 = soup.find('a', class_='menu__link',href=lambda x: x and x.startswith('/evs'))
-        zavuch_4 = soup.find('a', class_='menu__link',href=lambda x: x and x.startswith('/sem'))
-        zavuch_5 = soup.find('a', class_='menu__link',href=lambda x: x and x.startswith('/cur'))
-
-
-
-        if zavuch_1:
-            zavuch_11 = zavuch_1.get_text(strip=True)
-            print('•', zavuch_11)
-        if zavuch_2:
-            zavuch_22 = zavuch_2.get_text(strip=True)
-            print('•', zavuch_22)
-        if zavuch_3:
-            zavuch_33 = zavuch_3.get_text(strip=True)
-            print('•', zavuch_33)
-        if zavuch_4:
-            zavuch_44 = zavuch_4.get_text(strip=True)
-            print('•', zavuch_44)
-        if zavuch_5:
-            zavuch_55 = zavuch_5.get_text(strip=True)
-            print('•', zavuch_55)
+        zavuchs = soup.find_all('a', class_='menu__link',href=lambda x: x and any(x.startswith(p) for p in ('/kop', '/evs', '/cur', '/sem', '/sta')))
+        if zavuchs:
+            for a in zavuchs:
+                print(f'• {a.get_text(strip=True)}')
         # endregion
 
         # Новости
