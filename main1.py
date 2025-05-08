@@ -59,10 +59,10 @@ def parse_gymnasium_19(url):
 
         # TODO код повторяется, отличии минимальны, соблюдай принцип DRY и в соответствии с этим принципом внеси изменения в код
         # region переписать по DRY
-        fa_zavuch = ['/kop', '/evs', '/cur', '/sem', '/sta']
-        zavuch = soup.find_all('a', class_='menu__link', href=lambda x: x and any(x.startswith(p) for p in fa_zavuch))
-        if zavuch:
-            for a in zavuch:
+        fa_zam_ruk = ['/kop', '/evs', '/cur', '/sem', '/sta']
+        zam_ruk = soup.find_all('a', class_='menu__link', href=lambda x: x and any(x.startswith(p) for p in fa_zam_ruk))
+        if zam_ruk:
+            for a in zam_ruk:
                 logging.info(f'{a.get_text(strip=True)}')
         # endregion
 
