@@ -1,6 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+import logging
+
+logging.basicConfig(
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
 
 """
 TODO:
@@ -22,46 +28,46 @@ def parse_gymnasium_19(url):
         soup = BeautifulSoup(response.text, 'html.parser')
 
         # Контакты
-        print("\n Контактные данные:")
+        logging.info("\n Контактные данные:")
 
         # Телефон
         phone_link = soup.find('a', class_='departments__link', href=lambda x: x and x.startswith('tel:'))
         if phone_link:
             phone_numbers = phone_link.get_text(strip=True)
-            print(f'• Телефон: {phone_numbers}')
+            logging.info(f'Телефон: {phone_numbers}')
 
         # Email
         email = soup.find('a', href=lambda x: x and x.startswith('mailto:'))
         if email:
             email_ = email.get_text(strip=True)
-            print(f'• Email: {email_}')
+            logging.info(f'Email: {email_}')
         # Адрес
         adres = soup.find('div', class_='contacts__text')
         if adres:
             adres_ur = adres.get_text(strip=True)
-            print(f'• Адрес: {adres_ur[27:]}')
+            logging.info(f'Адрес: {adres_ur[27:]}')
 
         # Директор
         director_div = soup.find('div', class_='user__name')
         if director_div:
             director_name = director_div.get_text(strip=True)
             raw_name = re.sub(r"(?<=\w)([А-ЯЁ])", r" \1", director_name)
-            print(f'\n Директор: \n• {raw_name}')
+            logging.info(f'\nДиректор: \n{raw_name}')
 
         # Завучи
-        print('\n Завучи:')
+        logging.info('\n Завучи:')
 
         # TODO код повторяется, отличии минмиальны, соблюдай принцип DRY и в соответствии с этим принципом внеси изменения в код
         # region переписать по DRY
         fa_zavuch = ['/kop', '/evs', '/cur', '/sem', '/sta']
-        zavuch = soup.find_all('a', class_='menu__link', href=lambda x: x and any(x.startswith(p) for p in fa_zavuchs))
+        zavuch = soup.find_all('a', class_='menu__link', href=lambda x: x and any(x.startswith(p) for p in fa_zavuch))
         if zavuch:
             for a in zavuch:
-                print(f'• {a.get_text(strip=True)}')
+                logging.info(f'{a.get_text(strip=True)}')
         # endregion
 
         # Новости
-        print("\n Ссылки на новости:")
+        logging.info("\n Ссылки на новости:")
         news_links = set()
 
         for block in soup.find_all(class_=re.compile('news', re.IGNORECASE)):
@@ -77,12 +83,12 @@ def parse_gymnasium_19(url):
         # Вывод
         if news_links:
             for link in news_links:
-                print(f"→ {link}")
+                logging.info(f"{link}")
         else:
-            print("Не найдено.")
+            logging.info("Не найдено.")
 
     except Exception as e:
-        print(f"Ошибка: {e}")
+        logging.error(f"Ошибка: {e}")
 
 
 if __name__ == "__main__":
