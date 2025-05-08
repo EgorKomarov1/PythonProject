@@ -52,7 +52,7 @@ def parse_gymnasium_19(url):
         if director_div:
             director_name = director_div.get_text(strip=True)
             raw_name = re.sub(r"(?<=\w)([А-ЯЁ])", r" \1", director_name)
-            logging.info(f'\nДиректор: \n{raw_name}')
+            logging.info(f'Директор: {raw_name}')
 
         # Завучи
         logging.info('\n Завучи:')
