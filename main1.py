@@ -57,7 +57,7 @@ def parse_gymnasium_19(url):
         # Завучи
         logging.info('\n Завучи:')
 
-        # TODO код повторяется, отличии минмиальны, соблюдай принцип DRY и в соответствии с этим принципом внеси изменения в код
+        # TODO код повторяется, отличии минимальны, соблюдай принцип DRY и в соответствии с этим принципом внеси изменения в код
         # region переписать по DRY
         fa_zavuch = ['/kop', '/evs', '/cur', '/sem', '/sta']
         zavuch = soup.find_all('a', class_='menu__link', href=lambda x: x and any(x.startswith(p) for p in fa_zavuch))
