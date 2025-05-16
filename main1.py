@@ -26,7 +26,7 @@ def try_except_decorator(func):
         try:
             return func(*args, **kwargs)
         except Exception as e:
-            print(f"Ошибка в функции {func.__name__}: {e}")
+            logging.error(f"Ошибка в функции {func.__name__}: {e}")
             return None
     return wrapper
 
