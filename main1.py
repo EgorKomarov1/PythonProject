@@ -2,29 +2,23 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import logging
+import time
 
 logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',
     level=logging.INFO
 )
 
-"""
-TODO:
-1. Добавить логирование с использованием logging (заместо Print)
-2. Разобраться что такое декоратор, try/except вынести в декоратор
-3. Выводить в консоль (с помощью print) нужно в основном только на дебаге кода 
-    изучи вопрос куда можно сохранять полученные данные (какие БД существуют, 
-    какие форматы файлов существуют для хранения данных)
-4. Нужно изучить, что такое requerments и создать его в проекте
-5. Нужно изучить, что такое gitignore и создать его в проекте 
-
-"""
-
 
 def try_except_decorator(func):
     def wrapper(*args, **kwargs):
         try:
-            return func(*args, **kwargs)
+            start_time = time.time()
+            function = func(*args, **kwargs)
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            logging.info(f'Функция выполнилась за {elapsed_time} секунд')
+            return function
         except Exception as e:
             logging.error(f"Ошибка в функции {func.__name__}: {e}")
             return None
@@ -52,10 +46,10 @@ def parse_gymnasium_19(url):
         email_ = email.get_text(strip=True)
         logging.info(f'Email: {email_}')
     # Адрес
-    adres = soup.find('div', class_='contacts__text')
-    if adres:
-        adres_ur = adres.get_text(strip=True)
-        logging.info(f'Адрес: {adres_ur[27:]}')
+    address = soup.find('div', class_='contacts__text')
+    if address:
+        address_ur = address.get_text(strip=True)
+        logging.info(f'Адрес: {address_ur[27:]}')
 
     # Директор
     director_div = soup.find('div', class_='user__name')
@@ -64,11 +58,10 @@ def parse_gymnasium_19(url):
         raw_name = re.sub(r"(?<=\w)([А-ЯЁ])", r" \1", director_name)
         logging.info(f'Директор: {raw_name}')
 
-        # Завучи
+    # Завучи
     logging.info('\n Завучи:')
 
-    # TODO код повторяется, отличии минимальны, соблюдай принцип DRY и в соответствии с этим принципом внеси изменения в код
-    # region переписать по DRY
+    # region
     fa_zam_ruk = ['/kop', '/evs', '/cur', '/sem', '/sta']
     zam_ruk = soup.find_all('a', class_='menu__link', href=lambda x: x and any(x.startswith(p) for p in fa_zam_ruk))
     if zam_ruk:
