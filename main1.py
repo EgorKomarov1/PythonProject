@@ -85,11 +85,12 @@ def parse_gymnasium_19(url):
     logging.info('\n Завучи:')
 
     # region
-    fa_zam_ruk = ['/kop', '/evs', '/cur', '/sem', '/sta']
-    zam_ruk = soup.find_all('a', class_='menu__link', href=lambda x: x and any(x.startswith(p) for p in fa_zam_ruk))
-    if zam_ruk:
-        for a in zam_ruk:
-            logging.info(f'{a.get_text(strip=True)}')
+    all_lastnames_headteacher = ['/kop', '/evs', '/cur', '/sem', '/sta']
+    headteachers = soup.find_all('a', class_='menu__link', href=lambda x: x and any(x.startswith(p) for p in
+                                                                                    all_lastnames_headteacher))
+    if headteachers:
+        for lastname_headteacher in headteachers:
+            logging.info(f'{lastname_headteacher.get_text(strip=True)}')
     # endregion
 
     # Новости
@@ -97,15 +98,10 @@ def parse_gymnasium_19(url):
     news_links = set()
 
     for block in soup.find_all(class_=re.compile('news', re.IGNORECASE)):
-        for a in block.find_all('a', href=True):
-            link = a['href']
+        for news in block.find_all('a', href=True):
+            link = news['href']
             if not link.startswith(('javascript:', '#')):
                 news_links.add(link if link.startswith('http') else f"{url.rstrip('/')}/{link.lstrip('/')}")
-
-    for a in soup.find_all('a', href=True, string=re.compile('news', re.IGNORECASE)):
-        link = a['href']
-        if not link.startswith(('javascript:', '#')):
-            news_links.add(link if link.startswith('http') else f"{url.rstrip('/')}/{link.lstrip('/')}")
     # Вывод
     if news_links:
         for link in news_links:
