@@ -84,14 +84,12 @@ def parse_gymnasium_19(url):
     # Завучи
     logging.info('\n Завучи:')
 
-    # region
     all_lastnames_headteacher = ['/kop', '/evs', '/cur', '/sem', '/sta']
     headteachers = soup.find_all('a', class_='menu__link', href=lambda x: x and any(x.startswith(p) for p in
                                                                                     all_lastnames_headteacher))
     if headteachers:
         for lastname_headteacher in headteachers:
             logging.info(f'{lastname_headteacher.get_text(strip=True)}')
-    # endregion
 
     # Новости
     logging.info("\n Ссылки на новости:")
