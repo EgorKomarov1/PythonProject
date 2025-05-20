@@ -28,11 +28,7 @@ logger.addHandler(file_handler)
 def try_except_decorator(func):
     def wrapper(*args, **kwargs):
         try:
-            start_time = time.time()
             function = func(*args, **kwargs)
-            end_time = time.time()
-            elapsed_time = end_time - start_time
-            logging.info(f'Функция выполнилась за {elapsed_time} секунд')
             return function
         except Exception as e:
             logger.error(f"Ошибка в функции: {e}", exc_info=True)
@@ -40,7 +36,19 @@ def try_except_decorator(func):
     return wrapper
 
 
+def time_decorator(func):
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        function = func(*args, **kwargs)
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        logging.info(f'Функция выполнилась за {elapsed_time} секунд')
+        return function
+    return wrapper
+
+
 @try_except_decorator
+@time_decorator
 def parse_gymnasium_19(url):
     # Запрос к сайту
     response = requests.get(url)
@@ -104,7 +112,7 @@ def parse_gymnasium_19(url):
             logging.info(f"{link}")
     else:
         logging.info("Не найдено.")
-    return 1/0
+
 
 if __name__ == "__main__":
     website_url = "https://orel-gym19.obr57.ru/"
