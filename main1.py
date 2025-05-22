@@ -8,7 +8,7 @@ import time_decorator
 
 @try_except_decorator.try_except_decorator
 @time_decorator.time_decorator
-def parse_gymnasium_19(url: str) -> None:
+def parse_gymnasium_19(url: str):
     # Запрос к сайту
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -17,28 +17,37 @@ def parse_gymnasium_19(url: str) -> None:
     logging.info("\n Контактные данные:")
 
     # Телефон
-    phone_link = soup.find('a', class_='departments__link', href=lambda x: x and x.startswith('tel:'))
-    if phone_link:
-        phone_numbers = phone_link.get_text(strip=True)
-        logging.info(f'Телефон: {phone_numbers}')
+    def phone_numbers():
+        phone_link = soup.find('a', class_='departments__link', href=lambda x: x and x.startswith('tel:'))
+        if phone_link:
+            phone_number = phone_link.get_text(strip=True)
+            return phone_number
+    logging.info(f'Номер телефона: {phone_numbers()}')
 
     # Email
-    email = soup.find('a', href=lambda x: x and x.startswith('mailto:'))
-    if email:
-        email_ = email.get_text(strip=True)
-        logging.info(f'Email: {email_}')
+    def email_address():
+        email = soup.find('a', href=lambda x: x and x.startswith('mailto:'))
+        if email:
+            email_ = email.get_text(strip=True)
+            return email_
+    logging.info(f'Email: {email_address()}')
+
     # Адрес
-    address = soup.find('div', class_='contacts__text')
-    if address:
-        address_ur = address.get_text(strip=True)
-        logging.info(f'Адрес: {address_ur[27:]}')
+    def address_school():
+        address = soup.find('div', class_='contacts__text')
+        if address:
+            address_ur = address.get_text(strip=True)
+            return address_ur[27:]
+    logging.info(f'Адрес: {address_school()}')
 
     # Директор
-    director_div = soup.find('div', class_='user__name')
-    if director_div:
-        director_name = director_div.get_text(strip=True)
-        raw_name = re.sub(r"(?<=\w)([А-ЯЁ])", r" \1", director_name)
-        logging.info(f'Директор: {raw_name}')
+    def director():
+        director_div = soup.find('div', class_='user__name')
+        if director_div:
+            director_name = director_div.get_text(strip=True)
+            raw_name = re.sub(r"(?<=\w)([А-ЯЁ])", r" \1", director_name)
+            return raw_name
+    logging.info(f'Директор: {director()}')
 
     # Завучи
     logging.info('\n Завучи:')
