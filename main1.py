@@ -9,7 +9,14 @@ import time_decorator
 @try_except_decorator.try_except_decorator
 @time_decorator.time_decorator
 def parse_gymnasium_19(url: str):
+    """
+
+    :param url: ссылка на сайт
+    :return: телефон, email, адрес, ФИО директора, ФИО завучей, ссылки на последние новости
+    """
+
     # Запрос к сайту
+
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
