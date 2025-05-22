@@ -84,9 +84,9 @@ def parse_gymnasium_19(url: str) -> None:
     # Завучи
     logging.info('\n Завучи:')
 
-    all_lastnames_headteacher = ['/kop', '/evs', '/cur', '/sem', '/sta']
+    all_lastnames_headteachers = ['/kop', '/evs', '/cur', '/sem', '/sta']
     headteachers = soup.find_all('a', class_='menu__link', href=lambda x: x and any(x.startswith(p) for p in
-                                                                                    all_lastnames_headteacher))
+                                                                                    all_lastnames_headteachers))
     if headteachers:
         for lastname_headteacher in headteachers:
             logging.info(f'{lastname_headteacher.get_text(strip=True)}')
