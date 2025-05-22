@@ -2,54 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import logging
-import time
-
-logging.basicConfig(
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-)
-
-logger = logging.getLogger(__name__)
-
-console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.INFO)
-
-file_handler = logging.FileHandler("errors.log")
-file_handler.setLevel(logging.ERROR)
-
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-console_handler.setFormatter(formatter)
-file_handler.setFormatter(formatter)
-
-logger.addHandler(console_handler)
-logger.addHandler(file_handler)
+import try_except_decorator
+import time_decorator
 
 
-def try_except_decorator(func):
-    def wrapper(*args, **kwargs):
-        try:
-            function = func(*args, **kwargs)
-            return function
-        except Exception as e:
-            logger.error(f"Ошибка в функции: {e}", exc_info=True)
-            return None
-    return wrapper
-
-
-def time_decorator(func):
-    def wrapper(*args, **kwargs):
-        start_time = time.time()
-        function = func(*args, **kwargs)
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        logging.info(f'Функция выполнилась за {elapsed_time} секунд')
-        return function
-    return wrapper
-
-
-@try_except_decorator
-@time_decorator
-def parse_gymnasium_19(url: str) -> None:
+@try_except_decorator.try_except_decorator
+@time_decorator.time_decorator
+def parse_gymnasium_19(url: str):
     # Запрос к сайту
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
