@@ -49,7 +49,7 @@ def time_decorator(func):
 
 @try_except_decorator
 @time_decorator
-def parse_gymnasium_19(url):
+def parse_gymnasium_19(url: str) -> None:
     # Запрос к сайту
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
