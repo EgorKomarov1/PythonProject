@@ -63,7 +63,7 @@ def parse_gymnasium_19(url: str) -> None:
         phone_numbers = phone_link.get_text(strip=True)
         logging.info(f'Телефон: {phone_numbers}')
 
-        # Email
+    # Email
     email = soup.find('a', href=lambda x: x and x.startswith('mailto:'))
     if email:
         email_ = email.get_text(strip=True)
