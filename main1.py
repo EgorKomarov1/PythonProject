@@ -90,5 +90,3 @@ def parse_gymnasium_19(url: str) -> None:
 if __name__ == "__main__":
     website_url = "https://orel-gym19.obr57.ru/"
     parse_gymnasium_19(website_url)
-    a = 0
-
