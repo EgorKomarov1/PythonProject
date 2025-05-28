@@ -59,28 +59,32 @@ def parse_gymnasium_19(url: str) -> None:
     # Завучи
     logging.info('\n Завучи:')
 
-    all_lastnames_headteachers = ['/kop', '/evs', '/cur', '/sem', '/sta']
-    headteachers = soup.find_all('a', class_='menu__link', href=lambda x: x and any(x.startswith(p) for p in
-                                                                                    all_lastnames_headteachers))
-    if headteachers:
-        for FCs_headteacher in headteachers:
-            logging.info(f'{FCs_headteacher.get_text(strip=True)}')
+    def _headteachers_():
+        all_lastnames_headteachers = ['/kop', '/evs', '/cur', '/sem', '/sta']
+        headteachers = soup.find_all('a', class_='menu__link', href=lambda x: x and any(x.startswith(p) for p in
+                                                                                        all_lastnames_headteachers))
+        if headteachers:
+            for FCs_headteacher in headteachers:
+                logging.info(f'{FCs_headteacher.get_text(strip=True)}')
+    _headteachers_()
 
     # Новости
     logging.info("\n Ссылки на новости:")
     news_links = set()
 
-    for block in soup.find_all(class_=re.compile('news', re.IGNORECASE)):
-        for news in block.find_all('a', href=True):
-            link = news['href']
-            if not link.startswith(('javascript:', '#')):
-                news_links.add(link if link.startswith('http') else f"{url.rstrip('/')}/{link.lstrip('/')}")
-    # Вывод
-    if news_links:
-        for link in news_links:
-            logging.info(f"{link}")
-    else:
-        logging.info("Не найдено.")
+    def last_news_links():
+        for block in soup.find_all(class_=re.compile('news', re.IGNORECASE)):
+            for news in block.find_all('a', href=True):
+                link = news['href']
+                if not link.startswith(('javascript:', '#')):
+                    news_links.add(link if link.startswith('http') else f"{url.rstrip('/')}/{link.lstrip('/')}")
+        # Вывод
+        if news_links:
+            for link in news_links:
+                logging.info(f"{link}")
+        else:
+            logging.info("Не найдено.")
+    last_news_links()
 
 
 if __name__ == "__main__":
