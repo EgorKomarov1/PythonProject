@@ -1,13 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-import logging
-import try_except_decorator
-import time_decorator
+from decorator import time_decorator, try_except_decorator, logging
 
 
-@try_except_decorator.try_except_decorator
-@time_decorator.time_decorator
+@try_except_decorator
+@time_decorator
 def parse_gymnasium_19(url: str) -> None:
     """
 
