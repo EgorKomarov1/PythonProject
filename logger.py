@@ -19,14 +19,3 @@ file_handler.setFormatter(formatter)
 
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
-
-
-def try_except_decorator(func):
-    def wrapper(*args, **kwargs):
-        try:
-            function = func(*args, **kwargs)
-            return function
-        except Exception as e:
-            logger.error(f"Ошибка в функции: {e}", exc_info=True)
-            return None
-    return wrapper

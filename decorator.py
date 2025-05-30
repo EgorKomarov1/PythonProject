@@ -1,9 +1,16 @@
+from logger import logger, logging
 import time
-import logging
-logging.basicConfig(
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-)
+
+
+def try_except_decorator(func):
+    def wrapper(*args, **kwargs):
+        try:
+            function = func(*args, **kwargs)
+            return function
+        except Exception as e:
+            logger.error(f"Ошибка в функции: {e}", exc_info=True)
+            return None
+    return wrapper
 
 
 def time_decorator(func):
